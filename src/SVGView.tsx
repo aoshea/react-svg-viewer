@@ -3,10 +3,10 @@ import * as React from "react";
 export interface SVGViewProps {
   width: number;
   height: number;
-  scaleFactor: number;
-  maxScale: number;
-  minScale: number;
-  children: any;
+  scaleFactor?: number;
+  maxScale?: number;
+  minScale?: number;
+  children?: React.ReactNode;
 }
 
 type Point = {
@@ -66,11 +66,18 @@ function reducer(state: ViewState, action: Action) {
   }
 }
 
-function getVTM(vtm: SVGMatrix): string {
+function getVTM(vtm: SVGMatrix) {
   return vtm && `matrix(${vtm.a} ${vtm.b} ${vtm.c} ${vtm.d} ${vtm.e} ${vtm.f})`;
 }
 
-export default function SVGView(props: SVGViewProps) {
+export default function SVGView({
+  width,
+  height,
+  minScale = 0.5,
+  maxScale = 2,
+  children,
+  scaleFactor = 0.05
+}: SVGViewProps) {
   const ref = React.useRef<SVGSVGElement>(null);
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -89,8 +96,8 @@ export default function SVGView(props: SVGViewProps) {
     (scale, x, y) => {
       let vtm = state.vtm || ref.current.createSVGMatrix();
 
-      if (vtm.a > props.maxScale && scale > 1) return vtm;
-      if (vtm.a < props.minScale && scale < 1) return vtm;
+      if (vtm.a > maxScale && scale > 1) return vtm;
+      if (vtm.a < minScale && scale < 1) return vtm;
 
       return ref.current
         .createSVGMatrix()
@@ -99,7 +106,7 @@ export default function SVGView(props: SVGViewProps) {
         .translate(-x, -y)
         .multiply(vtm);
     },
-    [state.vtm, props.maxScale, props.minScale]
+    [state.vtm, maxScale, minScale]
   );
 
   let getPointFromEvent = React.useCallback(e => {
@@ -114,11 +121,11 @@ export default function SVGView(props: SVGViewProps) {
       e.preventDefault();
       let point = getPointFromEvent(e);
       let dir = e.deltaY < 0 ? -1 : 1;
-      let newScale = 1 + dir * props.scaleFactor;
+      let newScale = 1 + dir * scaleFactor;
       let vtm = scaleSVGMatrix(newScale, point.x, point.y);
       dispatch({ type: ActionTypes.SET_MATRIX, payload: vtm });
     },
-    [props.scaleFactor, scaleSVGMatrix, getPointFromEvent]
+    [scaleFactor, scaleSVGMatrix, getPointFromEvent]
   );
 
   React.useEffect(() => {
@@ -172,21 +179,19 @@ export default function SVGView(props: SVGViewProps) {
   };
 
   return (
-    <div>
-      <svg
-        ref={ref}
-        width={props.width}
-        height={props.height}
-        onMouseDown={handleInputStart}
-        onMouseMove={handleInputMove}
-        onMouseUp={handleInputEnd}
-        onTouchStart={handleInputStart}
-        onTouchMove={handleInputMove}
-        onTouchEnd={handleInputEnd}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g transform={getVTM(state.vtm)}>{props.children}</g>
-      </svg>
-    </div>
+    <svg
+      ref={ref}
+      width={width}
+      height={height}
+      onMouseDown={handleInputStart}
+      onMouseMove={handleInputMove}
+      onMouseUp={handleInputEnd}
+      onTouchStart={handleInputStart}
+      onTouchMove={handleInputMove}
+      onTouchEnd={handleInputEnd}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g transform={getVTM(state.vtm)}>{children}</g>
+    </svg>
   );
 }
