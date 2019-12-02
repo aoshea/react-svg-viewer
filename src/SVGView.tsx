@@ -126,12 +126,63 @@ export default function SVGView(props: SVGViewProps) {
     return () => window.removeEventListener("wheel", handleWheel);
   }, [handleWheel]);
 
+  let handleStart = (event: Touch | MouseEvent) => {
+    let point = getPointFromEvent(event);
+    dispatch({
+      type: ActionTypes.OFFSET,
+      payload: point
+    });
+    dispatch({ type: ActionTypes.DRAG_START });
+  };
+
+  let handleInputStart = (e: React.SyntheticEvent<SVGSVGElement>) => {
+    if (window.TouchEvent && e.nativeEvent instanceof TouchEvent) {
+      handleStart(e.nativeEvent.touches[0]);
+    }
+    if (e.nativeEvent instanceof MouseEvent) {
+      handleStart(e.nativeEvent);
+    }
+  };
+
+  let handleMove = (event: Touch | MouseEvent) => {
+    if (!state.dragging) return;
+    let point = getPointFromEvent(event);
+    let vtm = translateSVGMatrix(
+      point.x - state.offset.x,
+      point.y - state.offset.y
+    );
+    dispatch({
+      type: ActionTypes.SET_MATRIX,
+      payload: vtm
+    });
+    dispatch({ type: ActionTypes.OFFSET, payload: point });
+  };
+
+  let handleInputMove = (e: React.SyntheticEvent<SVGSVGElement>) => {
+    if (window.TouchEvent && e.nativeEvent instanceof TouchEvent) {
+      handleMove(e.nativeEvent.touches[0]);
+    }
+    if (e.nativeEvent instanceof MouseEvent) {
+      handleMove(e.nativeEvent);
+    }
+  };
+
+  let handleInputEnd = () => {
+    dispatch({ type: ActionTypes.DRAG_END });
+  };
+
   return (
     <div>
       <svg
         ref={ref}
         width={props.width}
         height={props.height}
+        onMouseDown={handleInputStart}
+        onMouseMove={handleInputMove}
+        onMouseUp={handleInputEnd}
+        onTouchStart={handleInputStart}
+        onTouchMove={handleInputMove}
+        onTouchEnd={handleInputEnd}
         xmlns="http://www.w3.org/2000/svg"
       >
         <g transform={getVTM(state.vtm)}>{props.children}</g>

@@ -10,7 +10,7 @@ const App = () => {
       <SVGView
         width={300}
         height={200}
-        scaleFactor={0.1}
+        scaleFactor={0.05}
         minScale={0.5}
         maxScale={2}
       >
