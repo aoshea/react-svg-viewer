@@ -20,11 +20,18 @@ type ViewState = {
   vtm: SVGMatrix;
 };
 
+enum ActionTypes {
+  DRAG_START = "DRAG_START",
+  DRAG_END = "DRAG_END",
+  OFFSET = "OFFSET",
+  SET_MATRIX = "SET_MATRIX"
+}
+
 type Action =
-  | { type: "DRAG_START" }
-  | { type: "DRAG_END" }
-  | { type: "OFFSET"; payload: Point }
-  | { type: "MATRIX"; payload: SVGMatrix };
+  | { type: ActionTypes.DRAG_START }
+  | { type: ActionTypes.DRAG_END }
+  | { type: ActionTypes.OFFSET; payload: Point }
+  | { type: ActionTypes.SET_MATRIX; payload: SVGMatrix };
 
 const initialState: ViewState = {
   dragging: false,
@@ -34,22 +41,22 @@ const initialState: ViewState = {
 
 function reducer(state: ViewState, action: Action) {
   switch (action.type) {
-    case "DRAG_START":
+    case ActionTypes.DRAG_START:
       return {
         ...state,
         dragging: true
       };
-    case "DRAG_END":
+    case ActionTypes.DRAG_END:
       return {
         ...state,
         dragging: false
       };
-    case "OFFSET":
+    case ActionTypes.OFFSET:
       return {
         ...state,
         offset: action.payload
       };
-    case "MATRIX":
+    case ActionTypes.SET_MATRIX:
       return {
         ...state,
         vtm: action.payload
@@ -57,6 +64,10 @@ function reducer(state: ViewState, action: Action) {
     default:
       throw new Error();
   }
+}
+
+function getVTM(vtm: SVGMatrix): string {
+  return vtm && `matrix(${vtm.a} ${vtm.b} ${vtm.c} ${vtm.d} ${vtm.e} ${vtm.f})`;
 }
 
 export default function SVGView(props: SVGViewProps) {
@@ -105,7 +116,7 @@ export default function SVGView(props: SVGViewProps) {
       let dir = e.deltaY < 0 ? -1 : 1;
       let newScale = 1 + dir * props.scaleFactor;
       let vtm = scaleSVGMatrix(newScale, point.x, point.y);
-      dispatch({ type: "MATRIX", payload: vtm });
+      dispatch({ type: ActionTypes.SET_MATRIX, payload: vtm });
     },
     [props.scaleFactor, scaleSVGMatrix, getPointFromEvent]
   );
@@ -123,7 +134,7 @@ export default function SVGView(props: SVGViewProps) {
         height={props.height}
         xmlns="http://www.w3.org/2000/svg"
       >
-        {props.children}
+        <g transform={getVTM(state.vtm)}>{props.children}</g>
       </svg>
     </div>
   );
