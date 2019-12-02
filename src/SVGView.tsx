@@ -6,6 +6,7 @@ export interface SVGViewProps {
   scaleFactor: number;
   maxScale: number;
   minScale: number;
+  children: any;
 }
 
 type Point = {
@@ -121,7 +122,9 @@ export default function SVGView(props: SVGViewProps) {
         width={props.width}
         height={props.height}
         xmlns="http://www.w3.org/2000/svg"
-      ></svg>
+      >
+        {props.children}
+      </svg>
     </div>
   );
 }

@@ -13,7 +13,9 @@ const App = () => {
         scaleFactor={0.1}
         minScale={0.5}
         maxScale={2}
-      />
+      >
+        <circle cx="10" cy="10" r="10"></circle>
+      </SVGView>
     </div>
   );
 };
