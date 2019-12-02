@@ -1,7 +1,5 @@
 const path = require("path");
 
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 module.exports = {
   entry: "./src/index.tsx",
   resolve: {
@@ -18,10 +16,5 @@ module.exports = {
         loader: "awesome-typescript-loader"
       }
     ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
-  ]
+  }
 };
