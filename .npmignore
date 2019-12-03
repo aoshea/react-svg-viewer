@@ -1,3 +1,5 @@
 webpack.config.js
 .gitignore
+.babelrc
 node_modules
+src
