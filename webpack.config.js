@@ -7,7 +7,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "/dist"),
-    filename: "bundle.js",
+    filename: "main.js",
     libraryTarget: "umd"
   },
   module: {

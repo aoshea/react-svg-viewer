@@ -2,7 +2,7 @@
   "name": "react-svg-viewer",
   "version": "0.0.1",
   "description": "React SVG Viewer",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "prepare": "rm -rf ./dist && npm run build",
     "start": "webpack-dev-server --mode development --open",
