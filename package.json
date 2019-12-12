@@ -20,17 +20,17 @@
   },
   "homepage": "https://github.com/aoshea/react-svg-viewer#readme",
   "devDependencies": {
-    "@types/react": "^16.9.13",
+    "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "awesome-typescript-loader": "^5.2.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "typescript": "^3.7.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "webpack-dev-server": "^3.9.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",
