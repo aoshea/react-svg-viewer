@@ -7160,8 +7160,8 @@ qs@6.7.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
 
 query-string@^4.1.0:
   version "4.3.4"
@@ -7338,6 +7338,10 @@ react-scripts@3.3.0:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-svg-viewer@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/react-svg-viewer/-/react-svg-viewer-0.0.3.tgz#74485a2dca0545a7829d7fe55cda3830e5406600"
 
 react@^16.12.0:
   version "16.12.0"
@@ -8699,6 +8703,10 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-pan-and-zoom@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/use-pan-and-zoom/-/use-pan-and-zoom-0.5.1.tgz#ddbbc88ec0b9a7821c74e232c0776a0af2c8af2b"
 
 use@^3.1.0:
   version "3.1.1"
